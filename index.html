@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript" async=1>
+      ;(function(p,l,o,w,i,n,g){if(!p[i]){p.GlobalSnowplowNamespace=p.GlobalSnowplowNamespace||[]; p.GlobalSnowplowNamespace.push(i);p[i]=function(){(p[i].q=p[i].q||[]).push(arguments) };p[i].q=p[i].q||[];n=l.createElement(o);g=l.getElementsByTagName(o)[0];n.async=1; n.src=w;g.parentNode.insertBefore(n,g)}}(window,document,"script","sp.js","snowplow"));
+      </script>
+    <title>TRY THIS, SNOWPLOW!</title>
+  </head>
+  <body>
+    <header></header>
+    <main>
+      <a href="#uno">uno</a>
+      <a href="#dos">dos</a>
+      <a href="#tres">tres</a>
+      <a href="#cuatro">cuatro</a>
+    </main>
+    <footer>
+      <script>
+        snowplow("newTracker", "sp", "127.0.0.1:8080", {
+          appId: "localTesto",
+          platform: "web",
+          contexts: {
+            webPage: true,
+            performanceTiming: true
+          }
+        });
+        snowplow("enableActivityTracking", 10, 10);
+        snowplow("enableLinkClickTracking");
+        // note: automatic form tracking only works on html forms
+        snowplow("enableFormTracking");
+        snowplow("trackPageView");
+      </script>
+    </footer>
+  </body>
+</html>

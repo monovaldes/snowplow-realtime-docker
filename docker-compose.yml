@@ -4,31 +4,22 @@ version: "3"
 services:
   elasticsearch:
     container_name: elasticsearch
-    image: blacktop/elasticsearch:6.5.4
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.4.2
     volumes:
       - es-volume:/usr/share/elasticsearch/data
     ports:
       - "9200:9200"
     environment:
+      - "discovery.type=single-node"
       - "cluster.name=snowplow"
       - "http.host=0.0.0.0"
       - "http.cors.enabled=true"
       - "http.cors.allow-origin=*"
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - "bootstrap.memory_lock=true"
-    cap_add:
-      - IPC_LOCK
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
 
   kibana:
     container_name: kibana
-    image: blacktop/kibana:6.5.4
+    image: docker.elastic.co/kibana/kibana:7.4.2
     ports:
       - "5601:5601"
     depends_on:
@@ -80,7 +71,7 @@ services:
 
   stream-collector:
     container_name: stream-collector
-    image: snowplow-docker-registry.bintray.io/snowplow/scala-stream-collector-nsq:0.14.0
+    image: snowplow/scala-stream-collector-nsq
     command: [ "--config", "/snowplow/config/stream-collector.hocon" ]
     depends_on:
       - nsqd
@@ -93,7 +84,7 @@ services:
 
   stream-enrich:
     container_name: stream-enrich
-    image: snowplow-docker-registry.bintray.io/snowplow/stream-enrich-nsq:0.19.0
+    image: snowplow/stream-enrich-nsq
     command: [
       "--config", "/snowplow/config/stream-enrich.hocon",
       "--resolver", "file:/snowplow/config/resolver.json",
